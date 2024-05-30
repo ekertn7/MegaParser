@@ -1,0 +1,8 @@
+pandas
+pytest
+pillow
+openpyxl
+selenium
+requests
+beautifulsoup4
+python-Levenshtein

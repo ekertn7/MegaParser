@@ -1,0 +1,8 @@
+**/.pytest_cache
+**/.vscode
+**/__pycache__
+**/.DS_Store
+**/._*.md
+**/.idea
+**/geckodriver*
+**/chromedriver*
