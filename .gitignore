@@ -6,3 +6,4 @@
 **/.idea
 **/geckodriver*
 **/chromedriver*
+**/venv

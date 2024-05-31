@@ -5,4 +5,5 @@ openpyxl
 selenium
 requests
 beautifulsoup4
+requests-kerberos
 python-Levenshtein

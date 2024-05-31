@@ -1,7 +1,9 @@
 import pytest
 from contextlib import nullcontext as does_not_raise
 import pandas as pd
-from SberMegaParser import read_dataframe, save_dataframe, create_empty_dataframe
+from SberMegaParser import (
+    read_dataframe, save_dataframe, create_empty_dataframe
+)
 from SberMegaParser import UnsupporetdFileExtensionException
 
 

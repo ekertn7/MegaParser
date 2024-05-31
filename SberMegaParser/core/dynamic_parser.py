@@ -88,8 +88,8 @@ class DynamicParser(Parser):
                 )
             except WebDriverException:
                 raise Exception(
-                    'Install webdriver for Chrome from https://developer.'
-                    'chrome.com/docs/chromedriver/downloads and put this file '
+                    'Install webdriver for Chrome from https://sites.google.com'
+                    '/chromium.org/driver/downloads and put this file '
                     'into the project\'s root directory please!'
                 )
         elif isinstance(self.parser_type, DynamicParserTypeFirefox):

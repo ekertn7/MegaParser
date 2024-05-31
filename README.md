@@ -27,4 +27,8 @@
 - __для VSCode__: кликаем на микстурку в левом меню (testing) -> configure python tests -> pytest -> _. root directory_ -> обновляем менюшку
 - __для PyCharm__: кликаем settings -> вбиваем в поиск "runner" -> testing -> default test runner -> выбрать _pytest_ из выпадающего меню
 
+Настройте rulers:
+- __для VSCode__: зайдите в настройки и напишите rulers -> кликните на _edit in settings.json_ -> добавьте значение 80
+- __для PyCharm__: зайдите в настройки -> editor -> code style -> visual guides -> добавьте значение 80
+
 [Соглашение по коду](/documentation/developers/code_rules.md) для тех, кто подключился к проекту впервые.

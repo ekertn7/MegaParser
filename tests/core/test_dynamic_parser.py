@@ -49,8 +49,8 @@ class TestDynamicParserWork:
         #         process = item.as_dict()
         #         if process_name in process['name'] and \
         #                 process['status'] == 'running':
-        #             return datetime.datetime.utcfromtimestamp(
-        #                 process['create_time']
+        #             return datetime.datetime.fromtimestamp(
+        #                 process['create_time'], datetime.timezone.utc
         #             )
 
         # dynamic_parser = DynamicParser(
