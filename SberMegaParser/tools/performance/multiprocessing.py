@@ -1,6 +1,8 @@
 from typing import Callable, Iterable
-from SberMegaParser import read_dataframe, save_dataframe, create_empty_dataframe
 import pandas as pd
+from SberMegaParser.tools.dataframes.dataframes import (
+    read_dataframe, save_dataframe, create_empty_dataframe
+)
 
 __all__ = ['multi_parser']
 
@@ -21,5 +23,5 @@ def _split_data_frame(df: pd.DataFrame, parts_count: int) -> Iterable[pd.DataFra
     pass
 
 
-def _couple_data_frame(df: Iterable[pd.DataFrame]) -> pd.DataFrame:
+def _couple_data_frames(df: Iterable[pd.DataFrame]) -> pd.DataFrame:
     pass

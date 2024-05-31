@@ -1,7 +1,9 @@
 import pytest
 from contextlib import nullcontext as does_not_raise
 from SberMegaParser import multi_parser
-from SberMegaParser.performance.multiprocessing import _split_data_frame, _couple_data_frame
+from SberMegaParser.tools.performance.multiprocessing import (
+    _split_data_frame, _couple_data_frames
+)
 
 
 class TestMultiParser:
@@ -25,14 +27,14 @@ class TestMultiParser:
             )
 
 
-class TestDataFrames:
+class TestDataFrameProcessing:
     def test_split_data_frame(self):
         input_data = ...
         parts_count = 2
         output_data = [...]
         assert _split_data_frame(input_data, parts_count) == output_data
 
-    def test_couple_data_frame(self):
+    def test_couple_data_frames(self):
         input_data = [...]
         output_data = ...
-        assert _couple_data_frame(input_data) == output_data
+        assert _couple_data_frames(input_data) == output_data
