@@ -4,6 +4,7 @@ import os
 from SberMegaParser.tools.dataframes.dataframes import (
     read_dataframe, save_dataframe, create_empty_dataframe
 )
+from SberMegaParser.core import (StaticParser, DynamicParser)
 
 __all__ = ['multi_parser']
 
@@ -30,7 +31,7 @@ def multi_parser(
     if dataframe_input_path:
         if not os.path.isfile(dataframe_input_path):
             raise ValueError('Входной файл не существует')
-        
+
         df_input = read_dataframe(dataframe_input_path)
 
     if not os.path.isdir(os.path.dirname(dataframe_output_path)):
@@ -38,6 +39,18 @@ def multi_parser(
 
     if df_input:
         df_input_splits = _split_data_frame(df_input, threads_count)
+
+    # TODO: пробрасываем выбранный тип парсера
+
+    # TODO: многопроцессорная читка
+
+    # заглушка (типа полученные спаршенные порции данных)
+    df_output_splits = [create_empty_dataframe(['A', 'B', 'C'])
+                        for i in range(3)]
+
+    df_output = _merge_data_frames(df_output_splits)
+
+    save_dataframe(df_output, dataframe_output_path)
 
 
 def _split_data_frame(df: pd.DataFrame, parts_count: int) -> Iterable[
