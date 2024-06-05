@@ -2,7 +2,7 @@ import pytest
 from contextlib import nullcontext as does_not_raise
 from SberMegaParser import multi_parser
 from SberMegaParser.tools.performance.multiprocessing import (
-    _split_data_frame, _couple_data_frames
+    _split_data_frame, _merge_data_frames
 )
 
 
@@ -37,4 +37,4 @@ class TestDataFrameProcessing:
     def test_couple_data_frames(self):
         input_data = [...]
         output_data = ...
-        assert _couple_data_frames(input_data) == output_data
+        assert _merge_data_frames(input_data) == output_data
