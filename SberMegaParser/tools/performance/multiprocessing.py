@@ -30,8 +30,8 @@ def multi_parser(
     if dataframe_input_path:
         if not os.path.isfile(dataframe_input_path):
             raise ValueError('Входной файл не существует')
-        # TODO: кастомизироать чтение в зависимости от типа
-        df_input = pd.read_csv(dataframe_input_path)
+        
+        df_input = read_dataframe(dataframe_input_path)
 
     if not os.path.isdir(os.path.dirname(dataframe_output_path)):
         raise ValueError('Путь для сохранения файлов не существует')
