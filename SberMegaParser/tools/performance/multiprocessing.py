@@ -1,10 +1,12 @@
 from typing import Callable, Iterable
+from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import os
 from SberMegaParser.tools.dataframes.dataframes import (
     read_dataframe, save_dataframe, create_empty_dataframe
 )
-from SberMegaParser.core import (StaticParser, DynamicParser)
+from SberMegaParser.core import (StaticParser, DynamicParser, Parser)
+from SberMegaParser.core.factories import (DynamicParserFactory, StaticParserFactory)
 
 __all__ = ['multi_parser']
 
@@ -17,9 +19,8 @@ def multi_parser(
     cookies,
     user_agents,
     threads_count: int = 1,
-    dynamic: bool = True,
+    is_dynamic: bool = True,
 ):
-
     # TODO: заимпортировать отдельные модули из os как закончим
     # первичная валидация
     df_input = None
@@ -31,18 +32,19 @@ def multi_parser(
     if dataframe_input_path:
         if not os.path.isfile(dataframe_input_path):
             raise ValueError('Входной файл не существует')
-
         df_input = read_dataframe(dataframe_input_path)
 
     if not os.path.isdir(os.path.dirname(dataframe_output_path)):
         raise ValueError('Путь для сохранения файлов не существует')
-
     if df_input:
         df_input_splits = _split_data_frame(df_input, threads_count)
 
-    # TODO: пробрасываем выбранный тип парсера
+    factory = DynamicParserFactory() if is_dynamic else StaticParserFactory()
+    parsers = [factory.create() for i in range(threads_count)]
 
-    # TODO: многопроцессорная читка
+    # logic должен кушать парсер на входе (причем лучше взять класс Parser)
+    with ThreadPoolExecutor(max_workers=threads_count) as executor:
+        executor.submit(logic, parsers, df_input_splits)
 
     # заглушка (типа полученные спаршенные порции данных)
     df_output_splits = [create_empty_dataframe(['A', 'B', 'C'])
