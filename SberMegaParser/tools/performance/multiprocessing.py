@@ -25,6 +25,7 @@ def multi_parser(
     # первичная валидация
     df_input = None
     df_input_splits = None
+    result = None
 
     if not isinstance(threads_count, int):
         raise ValueError('Количество потоков должно быть целочисленным')
@@ -44,11 +45,12 @@ def multi_parser(
 
     # logic должен кушать парсер на входе (причем лучше взять класс Parser)
     with ThreadPoolExecutor(max_workers=threads_count) as executor:
-        executor.submit(logic, parsers, df_input_splits)
+        future = executor.submit(logic, parsers, df_input_splits)
+        result = future.result()
 
     # заглушка (типа полученные спаршенные порции данных)
     df_output_splits = [create_empty_dataframe(['A', 'B', 'C'])
-                        for i in range(3)]
+                        for i in range(threads_count)]
 
     df_output = _merge_data_frames(df_output_splits)
 
