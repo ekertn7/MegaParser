@@ -11,7 +11,7 @@ EXCEL_ENGINE = 'openpyxl'
 EXCEL_EXTENSIONS = ['xlsx', 'xls']
 CSV_ENCODING = 'utf-8'
 CSV_SEPARATOR = ','
-CSV_EXTENSIONS = ['cvs', 'txt']
+CSV_EXTENSIONS = ['csv', 'txt']
 
 
 def create_empty_dataframe(columns: list[str] | tuple[str]) -> pd.DataFrame:

@@ -1,5 +1,5 @@
 from typing import Callable, Iterable
-from concurrent.futures import ThreadPoolExecutor
+from threading import Thread
 import pandas as pd
 import os
 from SberMegaParser.tools.dataframes.dataframes import (
@@ -12,12 +12,12 @@ __all__ = ['multi_parser']
 
 
 def multi_parser(
-    dataframe_input_path: str,
+    dataframe_input_path,
     dataframe_output_path: str,
     logic: Callable,
-    proxy,
-    cookies,
-    user_agents,
+    proxy = None,
+    cookies = None,
+    user_agents = None,
     threads_count: int = 1,
     is_dynamic: bool = True,
 ):
@@ -27,6 +27,7 @@ def multi_parser(
     df_input_splits = None
     result = None
 
+    # TODO: под удаление
     if not isinstance(threads_count, int):
         raise ValueError('Количество потоков должно быть целочисленным')
 
@@ -41,12 +42,21 @@ def multi_parser(
         df_input_splits = _split_data_frame(df_input, threads_count)
 
     factory = DynamicParserFactory() if is_dynamic else StaticParserFactory()
-    parsers = [factory.create() for i in range(threads_count)]
 
     # logic должен кушать парсер на входе (причем лучше взять класс Parser)
-    with ThreadPoolExecutor(max_workers=threads_count) as executor:
-        future = executor.submit(logic, parsers, df_input_splits)
-        result = future.result()
+
+    threads = []
+    for i in range(threads_count):
+        threads.append(Thread(target=logic,
+                              args=(factory.create(), )))
+    # TODO: + еще должен кушать список url-ов
+    # TODO: + сделать контроль append dataframe в список
+
+    for thread in threads:
+        thread.start()
+
+    for thread in threads:
+        thread.join()
 
     # заглушка (типа полученные спаршенные порции данных)
     df_output_splits = [create_empty_dataframe(['A', 'B', 'C'])
