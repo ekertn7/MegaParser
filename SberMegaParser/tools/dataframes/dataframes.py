@@ -1,6 +1,8 @@
 from typing import Iterable
 import pandas as pd
-from SberMegaParser import UnsupporetdFileExtensionException
+from SberMegaParser.exceptions import (
+    UnsupporetdFileExtensionException
+)
 
 __all__ = ['create_empty_dataframe', 'read_dataframe', 'save_dataframe']
 

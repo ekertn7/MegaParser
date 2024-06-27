@@ -1,3 +1,4 @@
-from . parser import Parser
-from . dynamic_parser import DynamicParser, DynamicParserType
-from . static_parser import StaticParser
+"""Core init."""
+from . parser import *
+from . dynamic_parser import *
+from . static_parser import *
