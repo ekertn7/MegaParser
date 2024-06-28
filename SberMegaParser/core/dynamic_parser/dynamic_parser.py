@@ -1,4 +1,3 @@
-"""TODO"""
 from typing import List, Iterable, Tuple
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -37,50 +36,55 @@ __all__ = ['DynamicParser']
 
 
 class DynamicParser(Parser):
+    """Dynamic parser realisation."""
     def __init__(
         self,
-        dynamic_parser_type: DynamicParserType,
+        dynamic_parser_type: DynamicParserTypeChrome | DynamicParserTypeFirefox,
         headless: bool = False,
         window_width: int = None,
         window_height: int = None,
-        user_agent = None,
+        user_agent: str = None,
         cookies = None,
         proxy = None,
         driver_path: str = None
     ):
-        if not isinstance(dynamic_parser_type, DynamicParserType):
+        if not dynamic_parser_type in (DynamicParserType.chrome,
+                                       DynamicParserType.firefox):
             raise UnsupporetdDynamicParserTypeException()
-        self.parser_type = dynamic_parser_type.value(
+        self.parser_type = dynamic_parser_type(
             headless=headless,
             window_width=window_width,
             window_height=window_height,
-            driver_path=driver_path
+            driver_path=driver_path,
+            user_agent=user_agent
         )
         self.__driver = None
 
     def open_connection(self) -> None:
+        """Create web driver object."""
         if self.__driver is not None:
             raise DriverAlreadyInitializedException()
-        if isinstance(self.parser_type, DynamicParserTypeChrome):
-            try:
-                self.__driver = webdriver.Chrome(
-                    executable_path = self.parser_type.driver_path,
-                    options=self.parser_type.options
-                )
-            except (SeleniumWebDriverException,
-                    SeleniumManagerException) as se:
-                raise DriverDoesNotExistException(self.parser_type) from se
-        elif isinstance(self.parser_type, DynamicParserTypeFirefox):
-            try:
-                self.__driver = webdriver.Firefox(
-                    executable_path = self.parser_type.driver_path,
-                    options=self.parser_type.options
-                )
-            except (SeleniumWebDriverException,
-                    SeleniumManagerException) as se:
-                raise DriverDoesNotExistException(self.parser_type) from se
-        else:
-            raise UnsupporetdDynamicParserTypeException()
+        match type(self.parser_type):
+            case DynamicParserType.chrome:
+                try:
+                    self.__driver = webdriver.Chrome(
+                        executable_path = self.parser_type.driver_path,
+                        options=self.parser_type.options
+                    )
+                except (SeleniumWebDriverException,
+                        SeleniumManagerException) as se:
+                    raise DriverDoesNotExistException(self.parser_type) from se
+            case DynamicParserType.firefox:
+                try:
+                    self.__driver = webdriver.Firefox(
+                        executable_path = self.parser_type.driver_path,
+                        options=self.parser_type.options
+                    )
+                except (SeleniumWebDriverException,
+                        SeleniumManagerException) as se:
+                    raise DriverDoesNotExistException(self.parser_type) from se
+            case _:
+                raise UnsupporetdDynamicParserTypeException()
 
     def windows(self) -> list[str]:
         """Returns list with windows ids."""
@@ -101,6 +105,7 @@ class DynamicParser(Parser):
         self.__driver.close()
 
     def get(self, url: str) -> None:
+        """Get web page by URI/URL."""
         if self.__driver is None:
             raise DriverIsNotInitializedException()
         self.__driver.get(url)
@@ -110,6 +115,7 @@ class DynamicParser(Parser):
         element_xpath: str,
         sleep_range: Tuple[int, int] | TimeRange = TimeRange(100, 200)
     ) -> WebElement:
+        """Find one element on web page by xpath."""
         if self.__driver is None:
             raise DriverIsNotInitializedException()
         sleep_random(sleep_range)
@@ -120,6 +126,7 @@ class DynamicParser(Parser):
         element_xpath: str,
         sleep_range: Tuple[int, int] | TimeRange = TimeRange(100, 200)
     ) -> List[WebElement]:
+        """Find multiple elements on web page by xpath."""
         if self.__driver is None:
             raise DriverIsNotInitializedException()
         sleep_random(sleep_range)
@@ -235,6 +242,7 @@ class DynamicParser(Parser):
         return result
 
     def close_connection(self, reason: str = None) -> str | None:
+        """Delete web driver object."""
         if self.__driver is None:
             raise DriverIsNotInitializedException()
         self.__driver.close()

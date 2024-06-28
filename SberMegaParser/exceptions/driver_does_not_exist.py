@@ -13,12 +13,12 @@ class DriverDoesNotExistException(Exception):
     does not exist in system."""
     def __init__(self, parser_type):
         match type(parser_type):
-            case DynamicParserType.chrome.value:
+            case DynamicParserType.chrome:
                 self.message = \
                     'Install webdriver for Chrome from https://sites.google.' \
                     'com/chromium.org/driver/downloads and put this file ' \
                     'into the project\'s root directory please!'
-            case DynamicParserType.firefox.value:
+            case DynamicParserType.firefox:
                 self.message = \
                     'Install webdriver for FireFox from https://github.com/' \
                     'mozilla/geckodriver/releases and put this file ' \
