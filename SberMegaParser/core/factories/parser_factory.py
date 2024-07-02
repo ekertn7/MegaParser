@@ -1,6 +1,11 @@
 from abc import ABC, abstractmethod
 
-__all__ = ['ParserFactory']
+__all__ = ['ParserFactory',
+           'create_nulls_collection']
+
+
+def create_nulls_collection(length: int):
+    return [None for _ in range(length)]
 
 
 class ParserFactory(ABC):
@@ -8,6 +13,3 @@ class ParserFactory(ABC):
     @abstractmethod
     def create(self):
         pass
-
-    def _create_nulls_collection(self, length):
-        return [None for _ in range(length)]
