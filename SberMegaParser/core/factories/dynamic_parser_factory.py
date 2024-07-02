@@ -2,6 +2,8 @@ from collections.abc import Iterable
 from SberMegaParser import DynamicParser, DynamicParserType
 from SberMegaParser.core.factories import ParserFactory
 
+__all__ = ['DynamicParserFactory']
+
 
 class DynamicParserFactory(ParserFactory):
     def __init__(self,

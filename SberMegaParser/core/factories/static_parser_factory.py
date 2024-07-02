@@ -1,5 +1,7 @@
-from SberMegaParser.core import StaticParser
-from SberMegaParser.core.factories import ParserFactory
+from SberMegaParser import StaticParser
+from SberMegaParser import ParserFactory
+
+__all__ = ['StaticParserFactory']
 
 
 class StaticParserFactory(ParserFactory):
