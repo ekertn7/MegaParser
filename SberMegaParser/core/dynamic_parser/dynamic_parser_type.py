@@ -12,7 +12,7 @@ class DynamicParserTypeChrome:
     """Initialization dynamic parser for Chrome webdriver."""
     def __init__(self, headless, window_width, window_height, driver_path,
                  user_agent):
-        self.driver_path = '/geckodriver' if not driver_path else driver_path
+        self.driver_path = '/chromedriver' if not driver_path else driver_path
 
         self.options = webdriver.ChromeOptions()
 
