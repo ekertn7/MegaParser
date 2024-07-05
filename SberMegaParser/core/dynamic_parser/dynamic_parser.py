@@ -32,6 +32,7 @@ from SberMegaParser.exceptions import (
     DriverIsNotInitializedException, DriverDoesNotExistException,
     DriverAlreadyInitializedException
 )
+from SberMegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
 
 __all__ = ['DynamicParser']
 
@@ -46,7 +47,7 @@ class DynamicParser(Parser):
         window_height: int = None,
         user_agent: str = None,
         cookies: Dict | List[Dict] = None,
-        proxy = None,
+        proxy: DynamicParserProxy = None,
         driver_path: str = None
     ):
         if not dynamic_parser_type in (DynamicParserType.chrome,
@@ -57,7 +58,8 @@ class DynamicParser(Parser):
             window_width=window_width,
             window_height=window_height,
             driver_path=driver_path,
-            user_agent=user_agent
+            user_agent=user_agent,
+            proxy=proxy
         )
         self.__driver = None
         self.__cookies = None

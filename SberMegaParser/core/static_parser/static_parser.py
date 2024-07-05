@@ -17,13 +17,14 @@ class StaticParser(Parser):
         self,
         user_agent: str = None,
         cookies: Dict = None,
-        proxy = None
+        proxy: Dict = None
     ):
         self.__parser = requests
         self.__headers = requests.utils.default_headers()
         if user_agent is not None:
             self.__headers.update({'User-Agent': user_agent})
         self.__cookies = cookies
+        self.__proxy = proxy
 
     def start_session(self):
         """Start requests session."""
@@ -44,6 +45,8 @@ class StaticParser(Parser):
         kwargs = {}
         if self.__cookies is not None:
             kwargs['data'] = self.__cookies
+        if self.__proxy is not None:
+            kwargs['proxies'] = self.__proxy
         try:
             responce = self.__parser.get(
                 url,

@@ -11,7 +11,7 @@ __all__ = [
 class DynamicParserTypeChrome:
     """Initialization dynamic parser for Chrome webdriver."""
     def __init__(self, headless, window_width, window_height, driver_path,
-                 user_agent):
+                 user_agent, proxy):
         self.driver_path = '/chromedriver' if not driver_path else driver_path
 
         self.options = webdriver.ChromeOptions()
@@ -40,6 +40,10 @@ class DynamicParserTypeChrome:
             self.options.add_argument('--headless')
         if user_agent:
             self.options.add_argument(f'user-agent={user_agent}')
+        if proxy:
+            proxy_url = f'http://{proxy.username}:{proxy.password}@' \
+                        f'{proxy.host}:{proxy.port}'
+            self.options.add_argument(proxy_url)
 
         self.options.add_experimental_option(
             'prefs',
@@ -56,10 +60,11 @@ class DynamicParserTypeChrome:
 class DynamicParserTypeFirefox:
     """Initialization dynamic parser for Firefox webdriver."""
     def __init__(self, headless, window_width, window_height, driver_path,
-                 user_agent):
+                 user_agent, proxy):
         self.driver_path = '/geckodriver' if not driver_path else driver_path
 
         self.options = webdriver.FirefoxOptions()
+        self.options.profile = FirefoxProfile()
 
         if window_width:
             self.options.add_argument(f'--width={window_width}')
@@ -68,9 +73,13 @@ class DynamicParserTypeFirefox:
         if headless:
             self.options.add_argument('--headless')
         if user_agent:
-            profile = FirefoxProfile()
-            profile.set_preference("general.useragent.override", user_agent)
-            self.options.profile = profile
+            self.options.profile.set_preference("general.useragent.override", user_agent)
+            self.options.profile.update_preferences()
+        if proxy:
+            self.options.profile.set_preference("network.proxy.type", 1)
+            self.options.profile.set_preference("network.proxy.http", proxy.host)
+            self.options.profile.set_preference("network.proxy.http_port", proxy.port)
+            self.options.profile.update_preferences()
 
 
 class DynamicParserType:
