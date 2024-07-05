@@ -1,4 +1,5 @@
-from typing import List, Iterable, Tuple
+from typing import List, Iterable, Tuple, Dict
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -11,7 +12,7 @@ from selenium.common.exceptions import (
     JavascriptException as SeleniumJavascriptException,
     StaleElementReferenceException as SeleniumStaleElementReferenceException,
     ElementNotInteractableException as SeleniumElementNotInteractableException,
-    SeleniumManagerException,
+    NoSuchDriverException as SeleniumNoSuchDriverException
     # NoSuchElementException as SeleniumNoSuchElementException
 )
 from SberMegaParser.core.parser import (
@@ -31,6 +32,7 @@ from SberMegaParser.exceptions import (
     DriverIsNotInitializedException, DriverDoesNotExistException,
     DriverAlreadyInitializedException
 )
+from SberMegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
 
 __all__ = ['DynamicParser']
 
@@ -44,8 +46,8 @@ class DynamicParser(Parser):
         window_width: int = None,
         window_height: int = None,
         user_agent: str = None,
-        cookies = None,
-        proxy = None,
+        cookies: Dict | List[Dict] = None,
+        proxy: DynamicParserProxy = None,
         driver_path: str = None
     ):
         if not dynamic_parser_type in (DynamicParserType.chrome,
@@ -56,9 +58,18 @@ class DynamicParser(Parser):
             window_width=window_width,
             window_height=window_height,
             driver_path=driver_path,
-            user_agent=user_agent
+            user_agent=user_agent,
+            proxy=proxy
         )
         self.__driver = None
+        self.__cookies = None
+        if cookies is not None:
+            if isinstance(cookies, dict):
+                self.__cookies = [cookies]
+            elif isinstance(cookies, list):
+                self.__cookies = cookies
+            else:
+                raise TypeError('Unvailable cookies format!')
 
     def open_connection(self) -> None:
         """Create web driver object."""
@@ -68,20 +79,18 @@ class DynamicParser(Parser):
             case DynamicParserType.chrome:
                 try:
                     self.__driver = webdriver.Chrome(
-                        executable_path = self.parser_type.driver_path,
                         options=self.parser_type.options
                     )
                 except (SeleniumWebDriverException,
-                        SeleniumManagerException) as se:
+                        SeleniumNoSuchDriverException) as se:
                     raise DriverDoesNotExistException(self.parser_type) from se
             case DynamicParserType.firefox:
                 try:
                     self.__driver = webdriver.Firefox(
-                        executable_path = self.parser_type.driver_path,
                         options=self.parser_type.options
                     )
                 except (SeleniumWebDriverException,
-                        SeleniumManagerException) as se:
+                        SeleniumNoSuchDriverException) as se:
                     raise DriverDoesNotExistException(self.parser_type) from se
             case _:
                 raise UnsupporetdDynamicParserTypeException()
@@ -109,6 +118,17 @@ class DynamicParser(Parser):
         if self.__driver is None:
             raise DriverIsNotInitializedException()
         self.__driver.get(url)
+
+    def set_cookies(self):
+        """Set cookies for current website."""
+        if self.__cookies is not None:
+            self.__driver.add_cookie(self.__cookies)
+        else:
+            raise NotImplementedError('Set cookies when init parser!')
+
+    def del_cookies(self):
+        """Delete cookies from opened connection."""
+        self.__driver.delete_all_cookies()
 
     def find(
         self,
@@ -196,6 +216,10 @@ class DynamicParser(Parser):
                 field.send_keys(DynamicParserKeys.BACKSPACE)
         field.send_keys(*content)
 
+    def get_html(self) -> BeautifulSoup:
+        """Returns BS4 object from current web page."""
+        return BeautifulSoup(self.__driver.page_source, 'html.parser')
+
     def click(
         self,
         element: WebElement,
@@ -229,6 +253,10 @@ class DynamicParser(Parser):
                 self.__driver.execute_script(
                     'arguments[0].scrollIntoView();', element
                 )
+                # x = element.location['x']
+                # y = element.location['y']
+                # self.__driver.execute_script(f'window.scrollTo({x}, {y});')
+                # self.__driver.execute_script('window.scrollBy(0, -120);')
                 ActionChains(self.__driver).move_to_element(element).\
                     click(element).perform()
             except (SeleniumStaleElementReferenceException,
@@ -250,3 +278,6 @@ class DynamicParser(Parser):
         self.__driver = None
         if reason:
             return reason
+
+    def get_cookies(self):
+        return self.__driver.get_cookies()
