@@ -1,4 +1,6 @@
 from PIL import Image
+import easyocr
+import cv2
 
 __all__ = ['recognize_capcha']
 
@@ -14,4 +16,7 @@ def _extract_image_from_url(image_url: str) -> Image:
 
 def _recognizer(image: Image) -> str:
     # python -m pytest tests/tools/capcha/test_capcha.py::TestRecognizer -v
-    pass
+    reader = easyocr.Reader(['en'])
+    results = reader.recognize(image)
+    for result in results:
+        return result[1]
