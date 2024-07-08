@@ -8,12 +8,12 @@ class Multiprocessor:
         self.processes = []
 
     @staticmethod
-    def _call_wrapper(func, queue, *args, **kwargs):
-        ret = func(args, kwargs)
+    def _call_wrapper(func, queue, parser, urls):
+        ret = func(parser, urls)
         queue.put(ret)
 
-    def run(self, func, *args, **kwargs):
-        args_all = [func, self.queue, args, kwargs]
+    def run(self, func, parser, urls):
+        args_all = [func, self.queue, parser, urls]
         process = Process(target=self._call_wrapper, args=args_all)
         self.processes.append(process)
         process.start()

@@ -1,6 +1,6 @@
 from collections.abc import Iterable
-from SberMegaParser import DynamicParser, DynamicParserType
-from SberMegaParser import ParserFactory, create_nulls_collection
+from SberMegaParser.core.dynamic_parser import DynamicParser, DynamicParserType
+from SberMegaParser.core.factories import ParserFactory, create_nulls_collection
 
 __all__ = ['DynamicParserFactory']
 
@@ -23,12 +23,11 @@ class DynamicParserFactory(ParserFactory):
         self.proxies = proxies if proxies is not None \
             else create_nulls_collection(objects_number)
 
-        self.window_width = kwargs['window_width']
-        self.window_height = kwargs['window_height']
-        self.headless = kwargs['headless']
+        self.window_width = kwargs.get('window_width', 700)
+        self.window_height = kwargs.get('window_height', 400)
+        self.headless = kwargs.get('headless', False)
 
-    # пока так, в идеале пробросить параметры в create
-    def create(self):
+    def get_parsers(self):
         for i in range(self.objects_number):
             parser = DynamicParser(
                 DynamicParserType.firefox,

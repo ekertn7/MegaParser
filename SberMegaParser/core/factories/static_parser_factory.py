@@ -1,6 +1,6 @@
 from collections.abc import Iterable
-from SberMegaParser import StaticParser
-from SberMegaParser import ParserFactory, create_nulls_collection
+from SberMegaParser.core.static_parser import *
+from SberMegaParser.core.factories import *
 
 __all__ = ['StaticParserFactory']
 
@@ -24,7 +24,7 @@ class StaticParserFactory(ParserFactory):
             else create_nulls_collection(objects_number)
 
     # TODO: после реализации статического парсера прописать точное создание
-    def create(self, **kwargs):
+    def get_parsers(self):
         for i in range(self.objects_number):
             parser = StaticParser(
                 cookies=self.cookies[i],

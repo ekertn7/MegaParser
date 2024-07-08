@@ -11,5 +11,5 @@ def create_nulls_collection(length: int):
 class ParserFactory(ABC):
 
     @abstractmethod
-    def create(self):
+    def get_parsers(self):
         pass

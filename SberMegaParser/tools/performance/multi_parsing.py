@@ -7,9 +7,8 @@ from SberMegaParser.tools.dataframes.dataframes import (
     read_dataframe, save_dataframe, create_empty_dataframe
 )
 from SberMegaParser.tools.user_agents import *
-from SberMegaParser.core import (StaticParser, DynamicParser, Parser)
-from SberMegaParser.core.factories import (DynamicParserFactory,
-                                           StaticParserFactory)
+from SberMegaParser.tools.performance.multiprocessor import Multiprocessor
+from SberMegaParser.core.factories import *
 
 __all__ = ['multi_parser']
 
@@ -28,8 +27,8 @@ def multi_parser(
     # TODO: заимпортировать отдельные модули из os как закончим
     # первичная валидация
     df_input = None
-    df_input_splits = None
-    df_output_splits = None
+    df_input_splits = []
+    df_output_splits = []
     result = None
 
     # TODO: переработать после дебага
@@ -38,15 +37,16 @@ def multi_parser(
             raise ValueError('Входной файл не существует')
         df_input = read_dataframe(dataframe_input_path)
 
-    if df_input:
+    if df_input is not None:
         df_input_splits = _split_data_frame(df_input, threads_count)
 
     if not os.path.isdir(os.path.dirname(dataframe_output_path)):
         raise ValueError('Путь для сохранения файлов не существует')
 
     if user_agents_list and generate_user_agents:
-        warnings.warn('Нельзя генерировать новые User Agent поверх существующих.'
-                      'Флаг generate_user_agents будет проигнорирован.')
+        warnings.warn(
+            'Нельзя генерировать новые User Agent поверх существующих.'
+            'Флаг generate_user_agents будет проигнорирован.')
     elif not user_agents_list and generate_user_agents:
         user_agents_list = [generate_user_agent(
             browsers=[UserAgentBrowsers.CHROME, UserAgentBrowsers.FIREFOX],
@@ -57,25 +57,15 @@ def multi_parser(
     factory = DynamicParserFactory(user_agents=user_agents_list) if is_dynamic \
         else StaticParserFactory()
 
-    # logic должен кушать парсер на входе (причем лучше взять класс Parser)
+    mp = Multiprocessor()
+    for i, new_parser in enumerate(factory.get_parsers()):
+        mp.run(logic, parser=new_parser, urls=df_input_splits[i])
 
-    threads = []
-    for i in range(threads_count):
-        threads.append(Thread(target=logic,
-                              args=(factory.create(), df_input_splits,
-                                    df_output_splits)))
-    # TODO: + еще должен кушать список url-ов
-    # TODO: + сделать контроль append dataframe в список
-
-    for thread in threads:
-        thread.start()
-
-    for thread in threads:
-        thread.join()
+    df_output_splits = mp.wait()
 
     # заглушка (типа полученные спаршенные порции данных)
-    df_output_splits = [create_empty_dataframe(['A', 'B', 'C'])
-                        for _ in range(threads_count)]
+    # df_output_splits = [create_empty_dataframe(['A', 'B', 'C'])
+    #                    for _ in range(threads_count)]
 
     df_output = _merge_data_frames(df_output_splits)
 
