@@ -18,9 +18,9 @@ def multi_parser(
     dataframe_input_path: str | None,
     dataframe_output_path: str,
     logic: Callable,
-    proxy=None,
-    cookies=None,
-    user_agents=None,
+    proxy_list=None,
+    cookies_list=None,
+    user_agents_list=None,
     threads_count: int = 1,
     is_dynamic: bool = True,
     generate_user_agents=True
@@ -44,17 +44,17 @@ def multi_parser(
     if not os.path.isdir(os.path.dirname(dataframe_output_path)):
         raise ValueError('Путь для сохранения файлов не существует')
 
-    if user_agents and generate_user_agents:
+    if user_agents_list and generate_user_agents:
         warnings.warn('Нельзя генерировать новые User Agent поверх существующих.'
                       'Флаг generate_user_agents будет проигнорирован.')
-    elif not user_agents and generate_user_agents:
-        user_agents = [generate_user_agent(
+    elif not user_agents_list and generate_user_agents:
+        user_agents_list = [generate_user_agent(
             browsers=[UserAgentBrowsers.CHROME, UserAgentBrowsers.FIREFOX],
             operating_systems=UserAgentOperatingSystems.WINDOWS,
             platforms=UserAgentPlatforms.PC)
             for _ in range(threads_count)]
 
-    factory = DynamicParserFactory(user_agents=user_agents) if is_dynamic \
+    factory = DynamicParserFactory(user_agents=user_agents_list) if is_dynamic \
         else StaticParserFactory()
 
     # logic должен кушать парсер на входе (причем лучше взять класс Parser)

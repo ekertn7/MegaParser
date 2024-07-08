@@ -1,7 +1,7 @@
 import pytest
 from contextlib import nullcontext as does_not_raise
 from SberMegaParser import multi_parser
-from SberMegaParser.tools.performance.multiprocessing import (
+from SberMegaParser.tools.performance.multi_parsing import (
     _split_data_frame, _merge_data_frames
 )
 
