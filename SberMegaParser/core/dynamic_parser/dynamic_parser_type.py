@@ -66,6 +66,10 @@ class DynamicParserTypeFirefox:
 
         self.options = webdriver.FirefoxOptions()
         self.options.profile = FirefoxProfile()
+        if platform.system() == 'Linux':
+            self.service = webdriver.FirefoxService('/snap/bin/firefox.geckodriver')
+        else:
+            self.service = webdriver.FirefoxService()
 
         if platform.system() == 'Linux':
             self.service = webdriver.FirefoxService('/snap/bin/firefox.geckodriver')

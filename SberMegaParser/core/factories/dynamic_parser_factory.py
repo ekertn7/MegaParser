@@ -1,6 +1,8 @@
-from collections.abc import Iterable
+from typing import List
 from SberMegaParser.core.dynamic_parser import DynamicParser, DynamicParserType
 from SberMegaParser.core.factories import ParserFactory, create_nulls_collection
+from SberMegaParser.exceptions import LengthsNotConsistentException
+from SberMegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
 
 __all__ = ['DynamicParserFactory']
 
@@ -8,10 +10,11 @@ __all__ = ['DynamicParserFactory']
 class DynamicParserFactory(ParserFactory):
     def __init__(self,
                  objects_number: int = 1,
-                 cookies: Iterable = None,
-                 user_agents: Iterable[str] = None,
-                 proxies: Iterable[str] = None,
+                 cookies: List = None,
+                 user_agents: List[str] = None,
+                 proxies: List[DynamicParserProxy] = None,
                  **kwargs):
+
         self.objects_number = objects_number
 
         self.cookies = cookies if cookies is not None \
@@ -22,6 +25,10 @@ class DynamicParserFactory(ParserFactory):
 
         self.proxies = proxies if proxies is not None \
             else create_nulls_collection(objects_number)
+
+        if not (len(self.cookies) == len(self.user_agents) ==
+                len(self.proxies) == self.objects_number):
+            raise LengthsNotConsistentException
 
         self.window_width = kwargs.get('window_width', 700)
         self.window_height = kwargs.get('window_height', 400)

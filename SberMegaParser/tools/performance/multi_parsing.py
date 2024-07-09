@@ -54,7 +54,10 @@ def multi_parser(
             platforms=UserAgentPlatforms.PC)
             for _ in range(threads_count)]
 
-    factory = DynamicParserFactory(user_agents=user_agents_list) if is_dynamic \
+    factory = DynamicParserFactory(objects_number=threads_count,
+                                   user_agents=user_agents_list,
+                                   proxies=proxy_list,
+                                   cookies=cookies_list) if is_dynamic \
         else StaticParserFactory()
 
     mp = Multiprocessor()
