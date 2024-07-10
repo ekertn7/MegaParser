@@ -16,10 +16,10 @@ from selenium.webdriver.support import expected_conditions as EC
 __all__ = ['gigahelp']
 
 
-TOKEN_GIGACHAT = ''
+#TOKEN_GIGACHAT = ''
 
 
-def gigahelp(url: str, query: str, tag=None, type_parser='bs', driver_path = None, type_query = 'code') -> str:
+def gigahelp(url: str, query: str, tag=None, type_parser='bs', driver_path = None, type_query = 'code', auth_token=None) -> str:
     """url - ссылка на сайт,
        query - запрос для GigaChat,
        tag - тэг для указания, если html-код страницы большой,
@@ -28,6 +28,7 @@ def gigahelp(url: str, query: str, tag=None, type_parser='bs', driver_path = Non
        type_query - вид запроса для GigaChat:
                     'code' - чтобы GigaChat написал парсер по html-коду 
                     'question' - режим работы вопрос-ответ
+       auth_token - токен для подключения к GigaChat, по умолчанию None, но без указания не подключится
                     """
     
     """Основная функция для выдачи результата по запросу пользователя.
@@ -46,7 +47,7 @@ def gigahelp(url: str, query: str, tag=None, type_parser='bs', driver_path = Non
         Обязательно нужно дать пример того, что хотите получить, какие поля и пример их содержания.
         """
     if type_query == 'question':
-        return _ask_gigachat(query)
+        return _ask_gigachat(query, auth_token)
     if type_query == 'code':
         clear_html = _crop_html(url, tag, type_parser, driver_path)
         return _ask_gigachat("Вот кода сайта: " + clear_html + query)
@@ -124,10 +125,10 @@ def _crop_html(url: str, tag=None, type_parser='bs', driver_path = None) -> str:
     return cleaned_txt
 
 
-def _ask_gigachat(query: str) -> str:
+def _ask_gigachat(query: str, auth_token) -> str:
     """Запрос к API гигачата."""
     # Авторизация в сервисе GigaChat
-    chat = GigaChat(credentials=TOKEN_GIGACHAT,
+    chat = GigaChat(credentials=auth_token,
                 verify_ssl_certs=False)
     messages = [SystemMessage(content="""Вы отличный помощник, 
                 который помогает писать парсеры по предоставленному коду html-страницы.
