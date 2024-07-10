@@ -1,5 +1,5 @@
-import pytest
 from contextlib import nullcontext as does_not_raise
+import pytest
 import cv2
 from SberMegaParser import recognize_capcha
 from SberMegaParser.tools.capcha.capcha import _recognizer
