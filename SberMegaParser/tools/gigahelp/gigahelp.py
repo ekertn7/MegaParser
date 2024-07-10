@@ -50,7 +50,7 @@ def gigahelp(url: str, query: str, tag=None, type_parser='bs', driver_path = Non
         return _ask_gigachat(query, auth_token)
     if type_query == 'code':
         clear_html = _crop_html(url, tag, type_parser, driver_path)
-        return _ask_gigachat("Вот кода сайта: " + clear_html + query)
+        return _ask_gigachat("Вот кода сайта: " + clear_html + query, auth_token)
 
 
 
