@@ -1,10 +1,9 @@
+import os
 import warnings
 from typing import Callable, Iterable
-from threading import Thread
 import pandas as pd
-import os
 from SberMegaParser.tools.dataframes.dataframes import (
-    read_dataframe, save_dataframe, create_empty_dataframe
+    read_dataframe, save_dataframe
 )
 from SberMegaParser.tools.user_agents import *
 from SberMegaParser.tools.performance.multiprocessor import Multiprocessor

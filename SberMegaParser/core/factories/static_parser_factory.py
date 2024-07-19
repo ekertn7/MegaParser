@@ -23,7 +23,6 @@ class StaticParserFactory(ParserFactory):
         self.proxies = proxies if proxies is not None \
             else create_nulls_collection(objects_number)
 
-    # TODO: после реализации статического парсера прописать точное создание
     def get_parsers(self):
         for i in range(self.objects_number):
             parser = StaticParser(
@@ -31,5 +30,4 @@ class StaticParserFactory(ParserFactory):
                 user_agent=self.user_agents[i],
                 proxy=self.proxies[i]
             )
-
             yield parser

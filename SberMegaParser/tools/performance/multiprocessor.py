@@ -1,8 +1,9 @@
 from multiprocessing import Process, Queue
 
+__all__ = ['Multiprocessor']
+
 
 class Multiprocessor:
-
     def __init__(self):
         self.queue = Queue()
         self.processes = []
@@ -26,4 +27,3 @@ class Multiprocessor:
         for process in self.processes:
             process.join()
         return results
-
