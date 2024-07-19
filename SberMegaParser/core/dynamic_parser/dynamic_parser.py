@@ -87,7 +87,8 @@ class DynamicParser(Parser):
             case DynamicParserType.firefox:
                 try:
                     self.__driver = webdriver.Firefox(
-                        options=self.parser_type.options
+                        options=self.parser_type.options,
+                        service=self.parser_type.service
                     )
                 except (SeleniumWebDriverException,
                         SeleniumNoSuchDriverException) as se:

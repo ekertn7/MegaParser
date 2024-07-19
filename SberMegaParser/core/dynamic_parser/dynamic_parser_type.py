@@ -1,3 +1,4 @@
+import platform
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 
@@ -65,6 +66,15 @@ class DynamicParserTypeFirefox:
 
         self.options = webdriver.FirefoxOptions()
         self.options.profile = FirefoxProfile()
+        if platform.system() == 'Linux':
+            self.service = webdriver.FirefoxService('/snap/bin/firefox.geckodriver')
+        else:
+            self.service = webdriver.FirefoxService()
+
+        if platform.system() == 'Linux':
+            self.service = webdriver.FirefoxService('/snap/bin/firefox.geckodriver')
+        else:
+            self.service = webdriver.FirefoxService()
 
         if window_width:
             self.options.add_argument(f'--width={window_width}')

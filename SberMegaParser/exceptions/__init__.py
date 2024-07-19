@@ -1,4 +1,5 @@
 """Exceptions init."""
+from . lengths_not_consistent import *
 from . driver_does_not_exist import *
 from . driver_is_not_initialized import *
 from . element_does_not_exist import *
