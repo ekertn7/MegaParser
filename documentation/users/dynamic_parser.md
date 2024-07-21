@@ -11,11 +11,12 @@
 - __window_height__: высота окна браузера
 
 Пример инициализации парсера динамических веб-сайтов:
+
 ```python
-from SberMegaParser import DynamicParser, DynamicParserType
+from MegaParser import DynamicParser, DynamicParserType
 
 parser_1 = DynamicParser(
-    DynamicParserType.firefox, # выбираем firefox в качестве браузера
+    DynamicParserType.firefox,  # выбираем firefox в качестве браузера
     window_width=300,
     window_height=700,
     headless=False

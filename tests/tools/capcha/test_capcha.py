@@ -1,8 +1,8 @@
 from contextlib import nullcontext as does_not_raise
 import pytest
 import cv2
-from SberMegaParser import recognize_capcha
-from SberMegaParser.tools.capcha.capcha import _recognizer
+from MegaParser import recognize_capcha
+from MegaParser.tools.capcha.capcha import _recognizer
 
 
 class FakeImageHref:

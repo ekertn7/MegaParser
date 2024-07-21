@@ -1,7 +1,7 @@
 """Exception class when trying to create a webdriver object, but webdriver does
 not exist in system."""
 from typing import assert_never
-from SberMegaParser.core.dynamic_parser.dynamic_parser_type import (
+from MegaParser.core.dynamic_parser.dynamic_parser_type import (
     DynamicParserType
 )
 

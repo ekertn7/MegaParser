@@ -2,12 +2,12 @@ import os
 import warnings
 from typing import Callable, Iterable
 import pandas as pd
-from SberMegaParser.tools.dataframes.dataframes import (
+from MegaParser.tools.dataframes.dataframes import (
     read_dataframe, save_dataframe
 )
-from SberMegaParser.tools.user_agents import *
-from SberMegaParser.tools.performance.multiprocessor import Multiprocessor
-from SberMegaParser.core.factories import *
+from MegaParser.tools.user_agents import *
+from MegaParser.tools.performance.multiprocessor import Multiprocessor
+from MegaParser.core.factories import *
 
 __all__ = ['multi_parser']
 

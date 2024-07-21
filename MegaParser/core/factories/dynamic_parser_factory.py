@@ -1,35 +1,34 @@
 from typing import List
-from SberMegaParser.core.dynamic_parser import dynamic_parser
-from SberMegaParser.core.dynamic_parser import dynamic_parser_type
-from SberMegaParser.core.factories import ParserFactory, create_nulls_collection
-from SberMegaParser.exceptions import LengthsNotConsistentException
-from SberMegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
+from MegaParser.core.dynamic_parser import dynamic_parser
+from MegaParser.core.dynamic_parser import dynamic_parser_type
+from MegaParser.core.factories import parser_factory
+from MegaParser.exceptions import LengthsNotConsistentException
+from MegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
 
 __all__ = ['DynamicParserFactory']
 
 
-class DynamicParserFactory(ParserFactory):
+class DynamicParserFactory(parser_factory.ParserFactory):
     def __init__(self,
                  objects_number: int = 1,
                  cookies: List = None,
                  user_agents: List[str] = None,
                  proxies: List[DynamicParserProxy] = None,
                  **kwargs):
-
         self.objects_number = objects_number
 
         self.cookies = cookies if cookies is not None \
-            else create_nulls_collection(objects_number)
+            else parser_factory.create_nulls_collection(objects_number)
 
         self.user_agents = user_agents if user_agents is not None \
-            else create_nulls_collection(objects_number)
+            else parser_factory.create_nulls_collection(objects_number)
 
         self.proxies = proxies if proxies is not None \
-            else create_nulls_collection(objects_number)
+            else parser_factory.create_nulls_collection(objects_number)
 
         if not (len(self.cookies) == len(self.user_agents) ==
                 len(self.proxies) == self.objects_number):
-            raise LengthsNotConsistentException
+            raise LengthsNotConsistentException()
 
         self.window_width = kwargs.get('window_width', 700)
         self.window_height = kwargs.get('window_height', 400)

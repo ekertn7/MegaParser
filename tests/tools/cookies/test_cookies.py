@@ -1,6 +1,6 @@
 import pytest
 from contextlib import nullcontext as does_not_raise
-from SberMegaParser import import_cookies
+from MegaParser import import_cookies
 
 
 class TestImportCookies:

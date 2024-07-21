@@ -1,8 +1,8 @@
 import pytest
 from enum import Enum
 from contextlib import nullcontext as does_not_raise
-from SberMegaParser import DynamicParser, DynamicParserType
-from SberMegaParser import UnsupporetdDynamicParserTypeException
+from MegaParser import DynamicParser, DynamicParserType
+from MegaParser import UnsupporetdDynamicParserTypeException
 
 
 class FakeDynamicParserTypeChrome:

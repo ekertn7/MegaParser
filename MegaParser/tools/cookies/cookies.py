@@ -1,5 +1,5 @@
 import json
-from SberMegaParser.core.parser import Parser
+from MegaParser.core.parser import Parser
 
 __all__ = ['extract_and_save_cookies', 'load_cookies_from_file']
 

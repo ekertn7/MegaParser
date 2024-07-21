@@ -1,5 +1,5 @@
 """Exception class when used unsupported DynamicParserType."""
-from SberMegaParser.core.dynamic_parser.dynamic_parser_type import (
+from MegaParser.core.dynamic_parser.dynamic_parser_type import (
     DynamicParserType
 )
 
