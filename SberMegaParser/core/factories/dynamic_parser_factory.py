@@ -1,5 +1,6 @@
 from typing import List
-from SberMegaParser.core.dynamic_parser import DynamicParser, DynamicParserType
+from SberMegaParser.core.dynamic_parser import dynamic_parser
+from SberMegaParser.core.dynamic_parser import dynamic_parser_type
 from SberMegaParser.core.factories import ParserFactory, create_nulls_collection
 from SberMegaParser.exceptions import LengthsNotConsistentException
 from SberMegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
@@ -36,8 +37,8 @@ class DynamicParserFactory(ParserFactory):
 
     def get_parsers(self):
         for i in range(self.objects_number):
-            parser = DynamicParser(
-                DynamicParserType.firefox,
+            parser = dynamic_parser.DynamicParser(
+                dynamic_parser_type.DynamicParserType.firefox,
                 window_width=self.window_width,
                 window_height=self.window_height,
                 headless=self.headless,
