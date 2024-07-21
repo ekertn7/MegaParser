@@ -15,24 +15,24 @@ from selenium.common.exceptions import (
     NoSuchDriverException as SeleniumNoSuchDriverException
     # NoSuchElementException as SeleniumNoSuchElementException
 )
-from SberMegaParser.core.parser import (
+from MegaParser.core.parser import (
     Parser
 )
-from SberMegaParser.core.dynamic_parser.dynamic_parser_type import (
+from MegaParser.core.dynamic_parser.dynamic_parser_type import (
     DynamicParserType, DynamicParserTypeChrome, DynamicParserTypeFirefox
 )
-from SberMegaParser.core.dynamic_parser.dynamic_parser_keys import (
+from MegaParser.core.dynamic_parser.dynamic_parser_keys import (
     DynamicParserKeys
 )
-from SberMegaParser.tools.other.sleep import (
+from MegaParser.tools.other.sleep import (
     sleep_random, TimeRange
 )
-from SberMegaParser.exceptions import (
+from MegaParser.exceptions import (
     ElementDoesNotExistException, UnsupporetdDynamicParserTypeException,
     DriverIsNotInitializedException, DriverDoesNotExistException,
     DriverAlreadyInitializedException
 )
-from SberMegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
+from MegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
 
 __all__ = ['DynamicParser']
 

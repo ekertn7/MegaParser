@@ -1,10 +1,8 @@
 from typing import Iterable, Dict
 import requests
 from bs4 import BeautifulSoup
-from SberMegaParser.core import (
-    Parser
-)
-from SberMegaParser.exceptions import (
+from MegaParser.core import Parser
+from MegaParser.exceptions import (
     UnavailableStatusCodeException, PageCanNotLoadException
 )
 

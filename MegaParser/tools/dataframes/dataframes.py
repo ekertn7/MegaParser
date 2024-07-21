@@ -1,6 +1,6 @@
 from typing import Iterable
 import pandas as pd
-from SberMegaParser.exceptions import (
+from MegaParser.exceptions import (
     UnsupporetdFileExtensionException
 )
 
@@ -14,12 +14,16 @@ CSV_SEPARATOR = ','
 CSV_EXTENSIONS = ['csv', 'txt']
 
 
-def create_empty_dataframe(columns: list[str] | tuple[str]) -> pd.DataFrame:
+def create_empty_dataframe(columns: Iterable[str]) -> pd.DataFrame:
     if all(isinstance(elem, str) for elem in columns) and \
-            isinstance(columns, (list, tuple)):
+            isinstance(columns, Iterable):
         return pd.DataFrame(columns=columns, data=[])
     else:
-        raise TypeError()
+        raise TypeError(
+            f'Expected iterable element with {type(str)} items!'
+            f'Got type {type(columns)} with '
+            f'{list({type(elem) for elem in columns})} items!'
+        )
 
 
 def _compare_file_extension(

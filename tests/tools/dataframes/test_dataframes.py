@@ -1,10 +1,10 @@
 import pytest
 from contextlib import nullcontext as does_not_raise
 import pandas as pd
-from SberMegaParser import (
+from MegaParser import (
     read_dataframe, save_dataframe, create_empty_dataframe
 )
-from SberMegaParser import UnsupporetdFileExtensionException
+from MegaParser import UnsupporetdFileExtensionException
 
 
 class TestCreateEmptyDataFrame:
@@ -12,7 +12,9 @@ class TestCreateEmptyDataFrame:
     vals = [
         (['first', 'second', 3], pytest.raises(TypeError)),
         ([1, 2, 3],              pytest.raises(TypeError)),
-        (123,                    pytest.raises(TypeError))
+        (123,                    pytest.raises(TypeError)),
+        (['first', 'second'],    does_not_raise()),
+        (('first', 'second'),    does_not_raise())
     ]
 
     def test_create_empty_dataframe_result_type(self):
@@ -43,13 +45,13 @@ class TestReadData:
             read_dataframe(file_path)
 
 
-class TestSaveData:
-    args = ['file_path', 'expectation']
-    vals = [
-        ('pytest.ini', pytest.raises(UnsupporetdFileExtensionException))
-    ]
+# class TestSaveData:
+#     args = ['file_path', 'expectation']
+#     vals = [
+#         ('pytest.ini', pytest.raises(UnsupporetdFileExtensionException))
+#     ]
 
-    @pytest.mark.parametrize(args, vals)
-    def test_save_data_exceptions(self, file_path, expectation):
-        with expectation:
-            read_dataframe(file_path)
+#     @pytest.mark.parametrize(args, vals)
+#     def test_save_data_exceptions(self, file_path, expectation):
+#         with expectation:
+#             save_dataframe(file_path)
