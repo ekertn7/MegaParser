@@ -12,3 +12,4 @@ gigachat == 0.1.30
 opencv-python==4.8.1.78
 fake-useragent==1.5.1
 easyocr==1.7.1
+python-bidi==0.4.2
