@@ -9,12 +9,14 @@ __all__ = ['DynamicParserFactory']
 
 
 class DynamicParserFactory(parser_factory.ParserFactory):
-    def __init__(self,
-                 objects_number: int = 1,
-                 cookies: List = None,
-                 user_agents: List[str] = None,
-                 proxies: List[DynamicParserProxy] = None,
-                 **kwargs):
+    def __init__(
+        self,
+        objects_number: int = 1,
+        cookies: List = None,
+        user_agents: List[str] = None,
+        proxies: List[DynamicParserProxy] = None,
+        **kwargs
+    ):
         self.objects_number = objects_number
 
         self.cookies = cookies if cookies is not None \
@@ -45,5 +47,4 @@ class DynamicParserFactory(parser_factory.ParserFactory):
                 user_agent=self.user_agents[i],
                 proxy=self.proxies[i]
             )
-
             yield parser

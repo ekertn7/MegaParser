@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from typing import Iterable
 from MegaParser.core import static_parser
 from MegaParser.core.factories import parser_factory
 
@@ -6,12 +6,14 @@ __all__ = ['StaticParserFactory']
 
 
 class StaticParserFactory(parser_factory.ParserFactory):
-    def __init__(self,
-                 objects_number: int = 1,
-                 cookies: Iterable = None,
-                 user_agents: Iterable[str] = None,
-                 proxies: Iterable[str] = None,
-                 **kwargs):
+    def __init__(
+        self,
+        objects_number: int = 1,
+        cookies: Iterable = None,
+        user_agents: Iterable[str] = None,
+        proxies: Iterable[str] = None,
+        **kwargs
+    ):
         self.objects_number = objects_number
 
         self.cookies = cookies if cookies is not None \
