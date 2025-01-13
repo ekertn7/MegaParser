@@ -32,7 +32,6 @@ from MegaParser.exceptions import (
     DriverIsNotInitializedException, DriverDoesNotExistException,
     DriverAlreadyInitializedException
 )
-from MegaParser.tools.proxy.dynamic_parser_proxy import DynamicParserProxy
 
 __all__ = ['DynamicParser']
 
@@ -47,7 +46,7 @@ class DynamicParser(Parser):
         window_height: int = None,
         user_agent: str = None,
         cookies: Dict | List[Dict] = None,
-        proxy: DynamicParserProxy = None,
+        proxy = None,
         driver_path: str = None
     ):
         if not dynamic_parser_type in (DynamicParserType.chrome,
